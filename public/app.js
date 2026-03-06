@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const usersList   = document.getElementById('users-list');
   const logList     = document.getElementById('activity-log');
   const audioBox    = document.getElementById('audio-container');
+  const ecToggle    = document.getElementById('ec-toggle');
+  const ecStatus    = ecToggle.querySelector('.ec-status');
 
   // ===== STATE =====
   let socket = null;
@@ -27,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let roomId = '';
   let localStream = null;
   let rtcConfig = null;       // Fetched from server
+  let ecEnabled = true;       // Echo/Noise cancellation ON by default
   const peers = {};           // peerId -> RTCPeerConnection
   const audioEls = {};        // peerId -> HTMLAudioElement
   const users = {};           // peerId -> { name }
@@ -100,25 +103,61 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ===== AUDIO =====
+  const getAudioConstraints = () => ({
+    echoCancellation: ecEnabled,
+    noiseSuppression: ecEnabled,
+    autoGainControl: true
+  });
+
   const initAudio = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        },
+        audio: getAudioConstraints(),
         video: false
       });
       // Mute by default (PTT)
       stream.getAudioTracks().forEach(t => t.enabled = false);
       localStream = stream;
-      log('MIC OK');
+      log(ecEnabled ? 'MIC OK [EC ON]' : 'MIC OK [EC OFF]');
       return true;
     } catch (e) {
       console.error('Mic error:', e);
       alert('Microphone access is required.\n\n' + e.message);
       return false;
+    }
+  };
+
+  // Re-acquire mic with new constraints and replace track in all peers
+  const reacquireMic = async () => {
+    if (!localStream) return;
+    const wasMuted = !localStream.getAudioTracks()[0]?.enabled;
+    try {
+      // Stop old tracks
+      localStream.getAudioTracks().forEach(t => t.stop());
+      // Get new stream with updated constraints
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        audio: getAudioConstraints(),
+        video: false
+      });
+      const newTrack = newStream.getAudioTracks()[0];
+      newTrack.enabled = !wasMuted; // preserve mute state
+      localStream = newStream;
+
+      // Replace track in all active peer connections
+      Object.keys(peers).forEach(pid => {
+        const pc = peers[pid];
+        const senders = pc.getSenders();
+        const audioSender = senders.find(s => s.track && s.track.kind === 'audio');
+        if (audioSender) {
+          audioSender.replaceTrack(newTrack).catch(err => {
+            console.warn('Track replace error for peer', pid, err);
+          });
+        }
+      });
+      log(ecEnabled ? 'EC/NC: ON' : 'EC/NC: OFF');
+    } catch (e) {
+      console.error('Reacquire mic error:', e);
+      log('EC toggle failed');
     }
   };
 
@@ -419,6 +458,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   leaveBtn.addEventListener('click', leave);
+
+  // Echo/Noise Cancel Toggle
+  ecToggle.addEventListener('click', async () => {
+    ecEnabled = !ecEnabled;
+    if (ecEnabled) {
+      ecToggle.classList.add('active');
+      ecStatus.textContent = 'ON';
+    } else {
+      ecToggle.classList.remove('active');
+      ecStatus.textContent = 'OFF';
+    }
+    // If already in a room, re-acquire mic with new settings
+    if (localStream) {
+      await reacquireMic();
+    }
+  });
 
   // Mouse PTT
   pttBtn.addEventListener('mousedown', startTx);

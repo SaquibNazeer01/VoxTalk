@@ -121,12 +121,22 @@
         <span class="ptt-hint">HOLD TO TRANSMIT</span>
       </div>
 
-      <!-- Volume knob decoration -->
-      <div class="knob-area">
-        <div class="knob">
-          <div class="knob-dot"></div>
+      <!-- Controls row: Volume knob + Echo Cancel toggle -->
+      <div class="controls-row">
+        <div class="knob-area">
+          <div class="knob">
+            <div class="knob-dot"></div>
+          </div>
+          <span class="knob-label">VOL</span>
         </div>
-        <span class="knob-label">VOL</span>
+
+        <div class="ec-toggle-area">
+          <button id="ec-toggle" class="ec-btn active" title="Echo & Noise Cancellation">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span class="ec-status">ON</span>
+          </button>
+          <span class="knob-label">EC / NC</span>
+        </div>
       </div>
 
     </div><!-- /radio-device -->
