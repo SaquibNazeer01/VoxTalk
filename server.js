@@ -1,10 +1,39 @@
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http, { cors: { origin: '*' } });
+const io = require('socket.io')(http, {
+  cors: { origin: '*' },
+  pingTimeout: 60000,
+  pingInterval: 25000
+});
 const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+// API endpoint to provide TURN credentials to clients
+app.get('/api/ice-servers', (req, res) => {
+  res.json({
+    iceServers: [
+      { urls: 'stun:stun.l.google.com:19302' },
+      { urls: 'stun:stun1.l.google.com:19302' },
+      {
+        urls: 'turn:openrelay.metered.ca:80',
+        username: 'openrelayproject',
+        credential: 'openrelayproject'
+      },
+      {
+        urls: 'turn:openrelay.metered.ca:443',
+        username: 'openrelayproject',
+        credential: 'openrelayproject'
+      },
+      {
+        urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+        username: 'openrelayproject',
+        credential: 'openrelayproject'
+      }
+    ]
+  });
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -12,6 +41,13 @@ app.get('*', (req, res) => {
 
 // Track users: socketId -> { name, roomId }
 const users = {};
+
+// Get list of user IDs in a room (excluding the requesting socket)
+const getRoomMembers = (roomId, excludeId) => {
+  const room = io.sockets.adapter.rooms.get(roomId);
+  if (!room) return [];
+  return [...room].filter(id => id !== excludeId);
+};
 
 io.on('connection', (socket) => {
   console.log('Connected:', socket.id);
@@ -22,7 +58,14 @@ io.on('connection', (socket) => {
     users[socket.id] = { name: name || 'User', roomId };
     console.log(`${name} (${socket.id}) joined room ${roomId}`);
 
-    // Notify existing users in the room
+    // Send the existing members list to the new joiner
+    const existingMembers = getRoomMembers(roomId, socket.id).map(id => ({
+      id,
+      name: users[id]?.name || 'User'
+    }));
+    socket.emit('room-members', existingMembers);
+
+    // Notify existing users about the new joiner
     socket.to(roomId).emit('user-joined', { id: socket.id, name });
     socket.emit('me', socket.id);
   });
