@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>VoxTalk | Walkie Talkie</title>
+  <meta name="description" content="Real-time push-to-talk walkie talkie web app.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+  <!-- ========== JOIN / SETUP SCREEN ========== -->
+  <div id="join-screen" class="screen active">
+    <div class="setup-container">
+      <div class="setup-radio-icon">
+        <i class="fa-solid fa-walkie-talkie"></i>
+      </div>
+      <h1 class="setup-title">VoxTalk</h1>
+      <p class="setup-subtitle">Push-to-Talk Radio</p>
+
+      <div class="setup-form">
+        <div class="setup-field">
+          <label>Your Callsign</label>
+          <input type="text" id="username-input" placeholder="Enter your name" maxlength="16" autocomplete="off" />
+        </div>
+
+        <button id="create-btn" class="setup-btn create-btn">
+          <i class="fa-solid fa-tower-broadcast"></i> Create Channel
+        </button>
+
+        <div class="setup-divider"><span>or join existing</span></div>
+
+        <div class="setup-field">
+          <label>Channel Frequency</label>
+          <input type="text" id="server-id-input" placeholder="Enter channel code" maxlength="10" autocomplete="off" />
+        </div>
+
+        <button id="join-btn" class="setup-btn join-btn">
+          <i class="fa-solid fa-right-to-bracket"></i> Join Channel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== WALKIE TALKIE ROOM ========== -->
+  <div id="room-screen" class="screen">
+    <div class="radio-device">
+
+      <!-- Antenna -->
+      <div class="antenna">
+        <div class="antenna-tip"></div>
+        <div class="antenna-rod"></div>
+      </div>
+
+      <!-- Top strip -->
+      <div class="radio-top-strip">
+        <button id="leave-btn" class="radio-hw-btn" title="Leave">
+          <i class="fa-solid fa-power-off"></i>
+        </button>
+        <div class="led-indicator">
+          <span class="led led-on" id="led-light"></span>
+        </div>
+      </div>
+
+      <!-- Speaker Grille -->
+      <div class="speaker-grille">
+        <div class="grille-line"></div>
+        <div class="grille-line"></div>
+        <div class="grille-line"></div>
+        <div class="grille-line"></div>
+        <div class="grille-line"></div>
+        <div class="grille-line"></div>
+        <div class="grille-line"></div>
+        <div class="grille-line"></div>
+      </div>
+
+      <!-- LCD Display -->
+      <div class="lcd-display">
+        <div class="lcd-row lcd-top">
+          <span class="lcd-label">CH</span>
+          <span class="lcd-value" id="lcd-channel">------</span>
+          <span class="lcd-signal" id="lcd-signal">
+            <i class="fa-solid fa-signal"></i>
+          </span>
+        </div>
+        <div class="lcd-row lcd-middle">
+          <span id="lcd-status">STANDBY</span>
+        </div>
+        <div class="lcd-row lcd-bottom">
+          <span id="lcd-users-count">USR: 1</span>
+          <span id="lcd-time"></span>
+        </div>
+      </div>
+
+      <!-- Connected Users strip -->
+      <div class="users-strip">
+        <ul id="users-list"></ul>
+      </div>
+
+      <!-- Activity Log -->
+      <div class="radio-log">
+        <ul id="activity-log">
+          <li>Radio powered on...</li>
+        </ul>
+      </div>
+
+      <!-- PTT Button -->
+      <div class="ptt-area">
+        <button id="ptt-btn" class="ptt-btn" aria-label="Push to talk">
+          <span class="ptt-label-inner">PTT</span>
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        <span class="ptt-hint">HOLD TO TRANSMIT</span>
+      </div>
+
+      <!-- Volume knob decoration -->
+      <div class="knob-area">
+        <div class="knob">
+          <div class="knob-dot"></div>
+        </div>
+        <span class="knob-label">VOL</span>
+      </div>
+
+    </div><!-- /radio-device -->
+
+    <div id="audio-container" style="display:none;"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+
+</html>
