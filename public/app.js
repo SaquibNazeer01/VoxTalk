@@ -459,15 +459,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   leaveBtn.addEventListener('click', leave);
 
-  // Echo/Noise Cancel Toggle
+  // Echo Cancel Toggle
   ecToggle.addEventListener('click', async () => {
     ecEnabled = !ecEnabled;
     if (ecEnabled) {
       ecToggle.classList.add('active');
-      ecStatus.textContent = 'ON';
+      ecStatus.textContent = 'ECHO OFF';
     } else {
       ecToggle.classList.remove('active');
-      ecStatus.textContent = 'OFF';
+      ecStatus.textContent = 'ECHO ON';
     }
     // If already in a room, re-acquire mic with new settings
     if (localStream) {
