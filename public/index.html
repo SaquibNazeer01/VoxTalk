@@ -146,9 +146,14 @@
 
   <!-- ========== FOOTER NAV (visible on both screens) ========== -->
   <div class="footer-nav">
-    <button class="footer-link" id="open-disclaimer-btn">
-      <i class="fa-solid fa-circle-info"></i> Disclaimer
-    </button>
+    <div class="disclaimer-btn-wrapper">
+      <div class="disclaimer-tooltip" id="disclaimer-tooltip">
+        <i class="fa-solid fa-arrow-down"></i> Please read
+      </div>
+      <button class="footer-link attention" id="open-disclaimer-btn">
+        <i class="fa-solid fa-circle-info"></i> Disclaimer
+      </button>
+    </div>
     <span class="footer-dot">•</span>
     <button class="footer-link" id="open-help-btn">
       <i class="fa-solid fa-circle-question"></i> Help

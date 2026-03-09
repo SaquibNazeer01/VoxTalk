@@ -732,6 +732,80 @@ body {
   font-size: 0.6rem;
 }
 
+/* Disclaimer attention wrapper */
+.disclaimer-btn-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Pulsing glow on Disclaimer button for first-time visitors */
+.footer-link.attention {
+  color: var(--accent);
+  animation: disclaimer-pulse 2s ease-in-out infinite;
+}
+
+@keyframes disclaimer-pulse {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(255, 102, 0, 0.2);
+    background: rgba(255, 102, 0, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 102, 0, 0.5), 0 0 30px rgba(255, 102, 0, 0.2);
+    background: rgba(255, 102, 0, 0.18);
+  }
+}
+
+/* Floating tooltip bubble */
+.disclaimer-tooltip {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 4px 16px rgba(255, 102, 0, 0.4);
+  animation: tooltip-bounce 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Arrow pointing down from tooltip */
+.disclaimer-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--accent);
+}
+
+@keyframes tooltip-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Hide animations once dismissed */
+.disclaimer-tooltip.hidden {
+  display: none;
+}
+
+.footer-link.attention.dismissed {
+  animation: none;
+  color: var(--text-dim);
+  background: none;
+  box-shadow: none;
+}
+
 /* ============================================
    MODALS
    ============================================ */

@@ -501,9 +501,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== MODALS =====
   const disclaimerModal = document.getElementById('disclaimer-modal');
   const helpModal = document.getElementById('help-modal');
+  const disclaimerBtn = document.getElementById('open-disclaimer-btn');
+  const disclaimerTooltip = document.getElementById('disclaimer-tooltip');
 
-  document.getElementById('open-disclaimer-btn').addEventListener('click', () => {
+  // Check if disclaimer was already seen
+  const disclaimerSeen = localStorage.getItem('voxtalk_disclaimer_seen');
+  if (disclaimerSeen) {
+    // Already seen — remove attention animations
+    disclaimerBtn.classList.add('dismissed');
+    disclaimerTooltip.classList.add('hidden');
+  }
+
+  disclaimerBtn.addEventListener('click', () => {
     disclaimerModal.classList.add('open');
+    // Dismiss the attention animation permanently
+    if (!localStorage.getItem('voxtalk_disclaimer_seen')) {
+      localStorage.setItem('voxtalk_disclaimer_seen', 'true');
+      disclaimerBtn.classList.add('dismissed');
+      disclaimerTooltip.classList.add('hidden');
+    }
   });
   document.getElementById('close-disclaimer').addEventListener('click', () => {
     disclaimerModal.classList.remove('open');
