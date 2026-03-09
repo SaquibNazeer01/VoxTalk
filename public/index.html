@@ -144,6 +144,120 @@
     <div id="audio-container" style="display:none;"></div>
   </div>
 
+  <!-- ========== FOOTER NAV (visible on both screens) ========== -->
+  <div class="footer-nav">
+    <button class="footer-link" id="open-disclaimer-btn">
+      <i class="fa-solid fa-circle-info"></i> Disclaimer
+    </button>
+    <span class="footer-dot">•</span>
+    <button class="footer-link" id="open-help-btn">
+      <i class="fa-solid fa-circle-question"></i> Help
+    </button>
+  </div>
+
+  <!-- ========== DISCLAIMER MODAL ========== -->
+  <div class="modal-overlay" id="disclaimer-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-circle-info"></i> Disclaimer</h2>
+        <button class="modal-close" id="close-disclaimer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="disclaimer-badge">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>EDUCATIONAL PROJECT</span>
+        </div>
+
+        <p class="disclaimer-text">
+          This walkie-talkie application is built <strong>strictly for educational purposes</strong>. 
+          It is not intended for commercial use, emergency communication, or any mission-critical applications.
+        </p>
+
+        <div class="dev-quote">
+          <i class="fa-solid fa-quote-left quote-icon"></i>
+          <p>
+            As I'm continuously learning about computer networks and how they work in the real world, 
+            this project is a showcase of my skills — built for educational purposes only. 
+            It demonstrates real-time WebRTC communication, WebSocket signaling, and peer-to-peer audio 
+            streaming across the internet.
+          </p>
+          <span class="quote-author">— Saquib Nazeer, Developer</span>
+        </div>
+
+        <div class="disclaimer-footer">
+          <p>Built with <i class="fa-solid fa-heart" style="color: #ff6600;"></i> using Node.js, Socket.IO & WebRTC</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== HELP MODAL ========== -->
+  <div class="modal-overlay" id="help-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-circle-question"></i> How to Use</h2>
+        <button class="modal-close" id="close-help"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="help-steps">
+          <div class="help-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Enter Your Name</h4>
+              <p>Type your name in the "Your Callsign" field so others can see who's talking.</p>
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Create or Join a Channel</h4>
+              <p><strong>Create Channel</strong> — generates a unique 6-character code. Share this code with your friends.<br>
+              <strong>Join Channel</strong> — enter the code someone shared with you and click Join.</p>
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Allow Microphone</h4>
+              <p>When your browser asks for microphone permission, tap <strong>Allow</strong>. This is needed to send your voice.</p>
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>Hold to Speak</h4>
+              <p>Press and <strong>hold</strong> the big <strong>SPEAK</strong> button to talk. Release it when you're done. On desktop, you can also hold the <strong>Spacebar</strong>.</p>
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h4>Echo Issues?</h4>
+              <p>If you hear echo, make sure the <strong>ECHO OFF</strong> button is enabled (green). Both users should have it on.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="help-contact">
+          <h4><i class="fa-solid fa-envelope"></i> Feedback & Contact</h4>
+          <p>Have suggestions or found a bug? Reach out!</p>
+          <a href="mailto:domainastrill@gmail.com" class="contact-link">
+            <i class="fa-solid fa-envelope"></i> domainastrill@gmail.com
+          </a>
+          <a href="https://saquibnazeer.vercel.app" target="_blank" rel="noopener" class="contact-link">
+            <i class="fa-solid fa-globe"></i> saquibnazeer.vercel.app
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="/app.js"></script>
 </body>

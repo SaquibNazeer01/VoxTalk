@@ -498,4 +498,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ===== MODALS =====
+  const disclaimerModal = document.getElementById('disclaimer-modal');
+  const helpModal = document.getElementById('help-modal');
+
+  document.getElementById('open-disclaimer-btn').addEventListener('click', () => {
+    disclaimerModal.classList.add('open');
+  });
+  document.getElementById('close-disclaimer').addEventListener('click', () => {
+    disclaimerModal.classList.remove('open');
+  });
+
+  document.getElementById('open-help-btn').addEventListener('click', () => {
+    helpModal.classList.add('open');
+  });
+  document.getElementById('close-help').addEventListener('click', () => {
+    helpModal.classList.remove('open');
+  });
+
+  // Close modal on outside click
+  [disclaimerModal, helpModal].forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      disclaimerModal.classList.remove('open');
+      helpModal.classList.remove('open');
+    }
+  });
+
 });

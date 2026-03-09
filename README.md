@@ -1,6 +1,8 @@
 # 🎙️ VoxTalk — Real-Time Push-to-Talk Walkie Talkie
 
 A real-time push-to-talk walkie talkie web app. Create a channel, share the code, hold the button, and talk.
+Built for educational purposes.
+
 
 Built with **Node.js**, **Socket.IO**, and **WebRTC**.
 
